@@ -21,7 +21,7 @@ int main() {
     dp[2] = 1;
     for (int i = 0; i < n; ++i) {
     	if (str[i] != '1') {
-    		dp[i + 3] = (dp[i + 2] + dp[i + 1] + dp[i]) % mod;
+            dp[i + 3] = (dp[i + 2] + dp[i + 1] + dp[i]) % mod;
     	}
     }
 
