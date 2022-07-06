@@ -1,19 +1,30 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-const int MAXN = 100500;
-int n;
-int a[MAXN];
+int binSearch(int arr[], int l, int r, int x) {
+  while (l <= r) {
+    int m = l + (r - l) / 2;
 
-int getFirstOne() {
-    int l = -1, r = n;
-    while (l + 1 < r) {
-        int mid = (l + r) / 2;
-        if (a[mid] == 0) {
-            l = mid;
-        } else {
-            r = mid;
-        }
+    if (arr[m] == x) {
+      return m;
     }
-    return r;
+    if (arr[m] < x) {
+      l = m + 1;
+    } else {
+      r = m - 1;
+    }
+  }
+  return -1;
+}
+
+int main() {
+  int n, x;
+  cin >> n >> x;
+  int arr[n];
+  for (int i = 0; i < n; ++i) {
+    cin >> arr[i];
+  }
+  int res = binSearch(arr, 0, n - 1, x);
+  cout << res << '\n';
+  return 0;
 }
