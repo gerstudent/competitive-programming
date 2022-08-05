@@ -1,3 +1,5 @@
+// simple solution: cout << m - n + 1
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -9,39 +11,39 @@ typedef vector<int> vi;
 typedef vector<vector<int>> vvi;
 typedef vector<bool> vb;
 
+vi p;
 vvi g;
-vi used, ans;
 
-void dfs(int v) {
-  used[v] = 1;
-  ans.pb(v + 1);
+int dfs(int v) {
+  int res = 0;
   for (auto u : g[v]) {
-    if (!used[u]) {
-      dfs(u);
-      ans.pb(v + 1);
+    if (!p[u]) {
+      p[u] = v;
+      res += dfs(u);
+    } else {
+      if (p[v] != u) {
+        res++;
+      }
     }
   }
+  return res;
 }
 
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  int n, m, v;
+  int n, m;
   cin >> n >> m;
-  g.resize(n + 1);
-  used.resize(n + 1);
+  g.resize(n + 1, vi(0));
+  p.resize(n + 1);
   for (int i = 0; i < m; i++) {
     int u, v;
     cin >> u >> v;
-    u--, v--;
-    g[u].pb(v);
-    g[v].pb(u);
+    g[u].push_back(v);
+    g[v].push_back(u);
   }
-  cin >> v;
-  dfs(v - 1);
-  cout << sz(ans) << '\n';
-  for (auto i : ans) {
-    cout << i << ' ';
-  }
+  p[1] = 1;
+  cout << (dfs(1) >> 1) << '\n';
+  return 0;
 }
