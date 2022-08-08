@@ -21,18 +21,29 @@ typedef vector<vector<int>> vvi;
 typedef vector<ll> vl;
 typedef vector<bool> vb;
 
+int n, m, s;
+vi ans, used;
 vvi g;
-vi used;
-bool cycle = false;
 
-void dfs(int v, int p = -1) {
-  used[v] = 1;
-  for (auto u : g[v]) {
-    if (!used[u]) {
-      dfs(u, v);
-    } else if (u != p) {
-      cycle = true;
+void bfs(int s) {
+  queue<int> q;
+  q.push(s);
+  ans.pb(s);
+  used[s] = 1;
+  while (!q.empty()) {
+    int v = q.front();
+    q.pop();
+    for (int u : g[v]) {
+      if (used[u]) {
+        continue;
+      }
+      used[u] = 1;
+      q.push(u);
+      ans.pb(u);
     }
+  }
+  for (auto it : ans) {
+    cout << it << ' ';
   }
 }
 
@@ -40,26 +51,15 @@ int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  int n, m;
   cin >> n >> m;
-  g.resize(n);
-  used.resize(n, 0);
-  for (int i = 0; i < m; i++) {
-    int u, v;
+  g.resize(n + 1);
+  used.resize(n + 1);
+  for (int i = 0, u, v; i < m; i++) {
     cin >> u >> v;
-    u--, v--;
     g[u].pb(v);
     g[v].pb(u);
   }
-  for (int i = 0; i < n; i++) {
-    if (!used[i]) {
-      dfs(i);
-    }
-  }
-  if (cycle) {
-    cout << "YES" << '\n';
-  } else {
-    cout << "NO" << '\n';
-  }
+  cin >> s;
+  bfs(s);
   return 0;
 }

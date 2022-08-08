@@ -21,45 +21,29 @@ typedef vector<vector<int>> vvi;
 typedef vector<ll> vl;
 typedef vector<bool> vb;
 
-vvi g;
-vi used;
-bool cycle = false;
-
-void dfs(int v, int p = -1) {
-  used[v] = 1;
-  for (auto u : g[v]) {
-    if (!used[u]) {
-      dfs(u, v);
-    } else if (u != p) {
-      cycle = true;
-    }
-  }
-}
-
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(nullptr);
 
   int n, m;
   cin >> n >> m;
-  g.resize(n);
-  used.resize(n, 0);
-  for (int i = 0; i < m; i++) {
-    int u, v;
+  vpi g;
+  vi res(n);
+  for (int i = 0, u, v; i < m; i++) {
     cin >> u >> v;
-    u--, v--;
-    g[u].pb(v);
-    g[v].pb(u);
+    g.pb({u, v});
   }
   for (int i = 0; i < n; i++) {
-    if (!used[i]) {
-      dfs(i);
+    int num;
+    cin >> num;
+    res[num] = i;
+  }
+  for (auto it : g) {
+    if (res[it.fi] >= res[it.se]) {
+      cout << "NO\n";
+      return 0;
     }
   }
-  if (cycle) {
-    cout << "YES" << '\n';
-  } else {
-    cout << "NO" << '\n';
-  }
+  cout << "YES\n";
   return 0;
 }
